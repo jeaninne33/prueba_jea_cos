@@ -5,13 +5,13 @@
         <div class="card">
             <div class="pricing-list">
                 <div class="prc-head">
-                    <h4>Prueba Técnica Vecindad del chavo Jeaninne Rivera</h4>
+                    <h4>Prueba Técnica Jeaninne Rivera</h4>
                 </div>
                 <div class="prc-list">
                     <ul>
                       
                     </ul>
-                    <a href="{{route('image-gallery.index')}}">Ver Galeria Vecindad del Chavo</a>
+                    <a href="{{route('users.index')}}">Ver Listados de Usuarios</a>
                 </div>
             </div>
         </div>

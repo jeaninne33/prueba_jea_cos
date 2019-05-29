@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('datos_users', 'UserController@getData')->name('users.datos');
+Route::resource('users', 'UserController');
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

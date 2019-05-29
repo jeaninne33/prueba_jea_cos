@@ -1,8 +1,8 @@
 {!! csrf_field() !!}
 <div id="messages"></div>
 <div class="form-group titulo">
-    <label for="exampleInputEmail1">Titulo:</label>
-   {{ Form::text('titulo', old('titulo'), ['class' => 'form-control input-md', 'placeholder' => 'Titulo', 'title' => 'Titulo' ]) }}
+    <label for="exampleInputEmail1">Nombre:</label>
+   {{ Form::text('name', old('name'), ['class' => 'form-control input-md', 'placeholder' => 'Nombre', 'title' => 'Nombre' ]) }}
 </div>
 <div class="form-group nombre">
     <label for="exampleInputPassword1">Nombre:</label>
@@ -58,7 +58,7 @@
                         $('#messages').addClass("alert alert-success");
                         $('#messages').html(data.msj);
                         setTimeout(function() {
-                           window.location.href = "{{route('image-gallery.index')}}"; //se devuelde a la vista
+                           window.location.href = "{{route('users.index')}}"; //se devuelde a la vista
                         }, 1000);
                       
                     },

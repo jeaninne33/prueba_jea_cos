@@ -28,8 +28,8 @@
                                     <a href="javascript:void(0)" aria-expanded="true"><i
                                             class="ti-dashboard"></i><span>Vecindad del Chavo</span></a>
                                     <ul class="collapse">
-                                        <li class="active"><a href="{{route('image-gallery.index')}}">Ver Galeria</a></li>
-                                        <li><a href="{{route('image-gallery.create')}}">Agregar Personaje</a></li>
+                                        <li class="active"><a href="{{route('users.index')}}">Ver Listado de Usuarios</a></li>
+                                        <li><a href="{{route('users.create')}}">Agregar Usuario</a></li>
                                         <li><a href="{{url('/')}}">Inicio</a></li>
                                     </ul>
                                 </li>

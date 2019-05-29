@@ -159,6 +159,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,//PARA LARAVEL COLLECTIVE
 
     ],
 
@@ -208,6 +209,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Form' => Collective\Html\FormFacade::class, //PARA LARAVEL COLLECTIVE
+        'Html' => Collective\Html\HtmlFacade::class,//PARA LARAVEL COLLECTIVE
 
     ],
 

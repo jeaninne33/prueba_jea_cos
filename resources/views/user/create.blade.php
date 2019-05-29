@@ -9,10 +9,10 @@
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title">Agregar Personaje</h4>
-                   {!! Form::open(['route' => 'image-gallery.store','id'=>'chavo',
-                'class'=>"form-image-upload",'enctype'=>"multipart/form-data"]) !!}
-                @include('vecindad_chavo.fields')
+                    <h4 class="header-title">Agregar Usuario</h4>
+                   {!! Form::open(['route' => 'users.store','id'=>'form',
+                'class'=>"form",'enctype'=>"multipart/form-data"]) !!}
+                     @include('user.fields')
                 {!! Form::close() !!}
                         
                    
