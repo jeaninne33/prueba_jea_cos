@@ -136,7 +136,8 @@
     {{ Html::script('/js/pie-chart.js') }}
     {{ Html::script('/js/plugins.js') }}
     {{ Html::script('/js/scripts.js') }}
-    
+    {{ Html::script('/js/mi_funciones.js') }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
    
     </body>
     

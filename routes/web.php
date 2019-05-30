@@ -23,4 +23,11 @@ Route::resource('users', 'UserController');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::post('datos_emails', 'EmailController@getData')->name('emails.datos');
+    Route::resource('emails', 'EmailController');
+});

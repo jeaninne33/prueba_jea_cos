@@ -78,6 +78,7 @@ class UserController extends Controller
               $acciones="<a href='".route( 'users.edit', [$user->id]) ."'  title='Editar' class='btn btn-default btn-xs'><i class='glyphicon glyphicon-edit'></i></a>
                     <form action='".route( 'users.destroy', [$user->id]) ."' method='post' class='deletes'>
                         <input name='_method' type='hidden' value='DELETE'>
+                        ". csrf_field()."
                         <button type='button' value='' title='Eliminar' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></button>
                     </form>";
                 //asignacion de botones de acciones 
@@ -200,9 +201,15 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $user=User::find($request->id);
-        $user->delete();
+        $user=User::find($id);
+        if(isset($user)){
+            $user->delete();
+            $result=['msj' => 'El usuario se ha eliminado correctamente','route'=>route('users.index')];
+            return response()->json($result,200);
+        }
+        $result=['msj' => 'Error no se encontro el usuario','route'=>route('users.index')];
+        return response()->json($result,422);
     }
 }

@@ -1,15 +1,15 @@
-@extends( 'layouts.layout' )
+@extends( 'home' )
 @section('container')
 
 <br>
 <div class="col-lg-10 mt-9">
         <div class="card">
             <div class="card-body">
-                <h4 class="header-title">Listado de Usuarios</h4>
+                <h4 class="header-title">Listado de Emails</h4>
                 <hr>
                 <div id="messages"></div>
                <p> <a class="btn btn-primary pull-right" 
-                href="{!! route('users.create') !!}"><i class="fa fa-plus">Agregar Usuario</i></a>
+                href="{!! route('emails.create') !!}"><i class="fa fa-plus">Agregar Email</i></a>
                 <p>
                 <br>
                 <hr>
@@ -19,12 +19,11 @@
                             <thead class="text-uppercase bg-dark">
                                 <tr class="text-white">
                                     <th scope="col">ID</th>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Direccion</th>
-                                    <th scope="col">Teléfono</th>
-                                    <th scope="col">Municipio</th>
-                                    <th scope="col">Acciones</th>
+                                    <th scope="col">Destinatario</th>
+                                    <th scope="col">Asunto</th>
+                                    <th scope="col">Mensaje</th>
+                                    <th scope="col">Usuario</th>
+        
                                 </tr>
                             </thead>
                         </table>
@@ -45,7 +44,7 @@
                 "serverSide": true,   
                 'order':[[0, 'desc']],
 				"ajax": {
-					"url":"<?= route('users.datos') ?>",
+					"url":"<?= route('emails.datos') ?>",
 					"dataType":"json",
 					"type":"POST",
                     "data":function ( d ) {//se hace como una funcion para que tome el valor actualizado del filtro
@@ -53,19 +52,13 @@
                      }
                 },
                 "drawCallback":function(response){
-                    //se recorre la tabla para agregar bla clase task_pending
-                    $('#lista_periodos .task_pending').each(function () {
-                        $(this).parents('tr').addClass('task_pending');
-                    });
                 },
                 "columns": [
                     { "data": "id" },
+                    { "data": "destinatario" },
+                    { "data": "asunto" },
+                    { "data": "mensaje" },
                     { "data": "name" },
-                    { "data": "email" },
-                    { "data": "direccion" },
-                    { "data": "telefono" },
-                    { "data": "nombre" },
-                    { "data": "action" },
                     
                 ]
             } );
