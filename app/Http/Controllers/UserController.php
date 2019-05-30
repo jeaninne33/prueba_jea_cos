@@ -196,6 +196,11 @@ class UserController extends Controller
     {
         $user=User::find($id);//buscamos el registro a eliminar
         if(isset($user)){//en caso satisfactorio de encontralo
+            $tiene_email=Email::where('user_id', $id)->get();//se busca si tiene algun email relacionado
+            if( count($tiene_email)>0){//si existen emails no se permite eliminar el registro
+                $result = ['msj' => 'No se puede eliminar el usuario debido a que posee emails relacionados', 'route' => route('users.index')];
+                return response()->json($result, 422);
+            }
             $user->delete();//se elimina
             //retornamos un array con el msj y la ruta ne caso de requerir un redirec
             $result=['msj' => 'El usuario se ha eliminado correctamente','route'=>route('users.index')];
