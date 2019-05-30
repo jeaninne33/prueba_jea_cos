@@ -38,7 +38,7 @@ class EmailController extends Controller
         $orden=$columnas[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
         
-        //trae todos los usuarios
+        //trae todos los emails
         $emails = Email::join('users','users.id','user_id')->select('emails.*','users.name');
       
         //se inicia el conteo de el total
@@ -68,7 +68,7 @@ class EmailController extends Controller
             $totalFiltro=0;
           }
           
-         //  //creo  un json data para retornar a la tabla de inscripciones
+         //  //creo  un json data para retornar a la tabla
          $json_data=array(
             "draw"=> intval($request->input('draw')),
             "recordsTotal"	=> intval($totalFiltro),
@@ -87,10 +87,10 @@ class EmailController extends Controller
    
     public function store(EmailStoreRequest $request)
     {
-        $email=New Email();
-        $email->fill($request->all());
-        $email->save();
-
+        $email=New Email();//se instancia el objeto
+        $email->fill($request->all());//se envia el request con los datos
+        $email->save();//se guardan los cambios
+        //retornamos un array con el msj y la ruta ne caso de requerir un redirec
         $result=[ 'msj'=>'El email se ha creado Correctamente','route'=>route('emails.index')];
         return response()->json($result,200);
 
