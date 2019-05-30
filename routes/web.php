@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 
 Route::post('datos_users', 'UserController@getData')->name('users.datos');
+Route::post('lista_Departamentos','UserController@Departamentos')->name('users.departamentos');
+Route::post('lista_Municipios','UserController@Municipios')->name('users.municipios');;
 Route::resource('users', 'UserController');
 
 

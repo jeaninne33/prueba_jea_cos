@@ -10,11 +10,11 @@
       <div class="col-12 mt-5">
         <div class="card">
           <div class="card-body">
-            <h4 class="header-title">Editar Personaje</h4>
-              {!! Form::model($image, ['route' => ['image-gallery.update', $image->id],
-                'method' => 'put', 'id'=>'chavo','class'=>"form-image-upload",'enctype'=>"multipart/form-data"])
+            <h4 class="header-title">Editar Usuario</h4>
+              {!! Form::model($user, ['route' => ['users.update', $user->id],
+                'method' => 'put', 'id'=>'form','class'=>"form",'enctype'=>"multipart/form-data"])
                   !!}
-                  @include('vecindad_chavo.fields')
+                  @include('user.fields')
               {!! Form::close() !!}
       </div>
       </div>

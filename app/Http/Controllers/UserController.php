@@ -31,13 +31,13 @@ class UserController extends Controller
     {
         //instancio las columnas de forma de array para la busqueda de la tabla 
         $columnas=array(
-            0=>'id',
+            0=>'users.id',
             1=>'name',
             2=>'email',
             3=>'direccion',
             4=>'telefono',
             5=>'municipio',
-            6=>'id',
+            6=>'users.id',
         );
         //datos que sirven para aplicar filtros de busqueda en la tablas 
         
@@ -47,7 +47,7 @@ class UserController extends Controller
         $dir = $request->input('order.0.dir');
         
         //trae todos los usuarios
-        $users = User::with('Municipio');
+        $users = User::join('municipios','municipios.id','municipio_id')->select('users.*','municipios.nombre');
       
         //se inicia el conteo de el total
         $totalFiltro = $users;
@@ -61,7 +61,8 @@ class UserController extends Controller
                     ->orWhere('email','like',"%{$search}%")
                     ->orWhere('telefono','like',"%{$search}%")
                     ->orWhere('direccion','like',"%{$search}%")
-                    ->orWhere('id','like',"%{$search}%");
+                    ->orWhere('nombre','like',"%{$search}%")
+                    ->orWhere('users.id','like',"%{$search}%");
                 });
               
                 $totalFiltro=$users;
@@ -74,14 +75,14 @@ class UserController extends Controller
             $totalFiltro=$totalFiltro->count();
             //recorrido de la tabla de actores
             foreach($users as $key=>$user){
-              $acciones="<a href='".route( 'admin.common.periods.edit', [$user->id]) ."'  title=". __('messages.general.messages.buttons.edit'). " class='btn btn-default btn-xs'><i class='glyphicon glyphicon-edit'></i></a>
-                    <form action='".route( 'admin.common.periods.destroy', [$user->id]) ."' method='post' class='deletes'>
+              $acciones="<a href='".route( 'users.edit', [$user->id]) ."'  title='Editar' class='btn btn-default btn-xs'><i class='glyphicon glyphicon-edit'></i></a>
+                    <form action='".route( 'users.destroy', [$user->id]) ."' method='post' class='deletes'>
                         <input name='_method' type='hidden' value='DELETE'>
-                        <button type='button' value='' title=" . __('messages.general.messages.buttons.delete') . " class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></button>
+                        <button type='button' value='' title='Eliminar' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></button>
                     </form>";
                 //asignacion de botones de acciones 
                 //asignaciones de las variables al arreglo de oportunidad
-                $perido->action=$acciones;
+                $user->action=$acciones;
             }//fin foreach oportunidades
           }else{
             $totalFiltro=0;
@@ -100,32 +101,56 @@ class UserController extends Controller
     }
     public function create()
     {
-        return view('user.create');
+        $datos['pais']=Pais::pluck('nombre','id');
+        $datos['departamento']=collect([]);
+        $datos['municipio']=collect([]);
+        return view('user.create')->with($datos);
+    }
+    public function edit($id)
+    {
+        $user=User::find($id);
+
+        $datos['pais']=Pais::pluck('nombre','id');
+        $municipio=Municipio::join('departamentos','departamentos.id','departamento_id')
+                ->where('municipios.id',$user->municipio_id)
+                ->select('municipios.*','departamentos.pais_id')->first();
+        $user->departamento_id=$municipio->departamento_id;
+        $user->pais_id=$municipio->pais_id;
+        $datos['municipio']=Municipio::where('departamento_id',$municipio->departamento_id)->pluck('nombre','id');
+        $datos['departamento']=Departamento::where('pais_id',$municipio->pais_id)->pluck('nombre','id');
+        $datos['user']= $user;
+        return view('user.edit')->with($datos);
     }
     // funcion que me permite listar paises
     public function listarPaises(){
         //me trae todos los paises
         return DB::table('paises')->get();
     }
-    // funcion que me permite listar departamentos
-    public function listarDepartamentos(Request $request){
-        //si envio una peticion por vue en el multiselect me filtra por el pais que escogi
-        if(isset($request->id)){
-            return DB::table('departamentos')->where('pais_id',$request->id)->get();
-            //si no me lista todos los departamentos
-        }else{
-            return DB::table('departamentos')->get();
+   /**
+    * funcion para listar departamentos
+    *  */
+    public function Departamentos(Request $request){
+       
+        $departamentos=Departamento::where('pais_id',$request->id)->get();
+        $select='<option value="" selected>Selecciona una opción</option>';
+        foreach($departamentos as $depar){
+            $select.='<option value="'.$depar->id.'">'.$depar->nombre.'</option>';
         }
+       return $select;
+
     }
-    // funcion que me permite listar municipios
-    public function listarMunicipios(Request $request){
-        //si envio una peticion por vue en el multiselect me filtra por el departamento que escogi
-        if(isset($request->id)){
-            return DB::table('municipios')->where('departamento_id',$request->id)->get();
-            //si no me lista todos los departamentos
-        }else{
-            return DB::table('municipios')->get();
+    /***
+     * funcion que listar municipios
+     * 
+     */
+    // 
+    public function Municipios(Request $request){
+        $municipios=Municipio::where('departamento_id',$request->id)->get();
+        $select='<option value="" selected>Selecciona una opción</option>';
+        foreach($municipios as $muni){
+            $select.='<option value="'.$muni->id.'">'.$muni->nombre.'</option>';
         }
+       return $select;
     }
     
 
@@ -135,8 +160,14 @@ class UserController extends Controller
         $user->name=$request->name;
         $user->email=$request->email;
         $user->password=bcrypt($request->password);
+        $user->direccion=$request->direccion;
+        $user->telefono=$request->telefono;
         $user->municipio_id=$request->municipio_id;
         $user->save();
+
+        $result=[ 'msj'=>'El usuario se ha creado Correctamente','route'=>route('users.index')];
+        return response()->json($result,200);
+
     }
 
 
@@ -149,12 +180,18 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, $id)
     {
-        $user=User::find($request->id);
+        $user=User::find($id);
         $user->name=$request->name;
         $user->email=$request->email;
-        $user->password=bcrypt($request->password);
+        $user->direccion=$request->direccion;
+        $user->telefono=$request->telefono;
+        if(isset($request->password) && !empty($request->password)){
+            $user->password=bcrypt($request->password);
+        }
         $user->municipio_id=$request->municipio_id;
         $user->save();
+        $result=[ 'msj'=>'El usuario se ha editado Correctamente','route'=>route('users.index')];
+        return response()->json($result,200);
     }
 
     /**

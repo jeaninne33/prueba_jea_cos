@@ -2,43 +2,38 @@
 @section('container')
 
 <br>
-<div class="row">
-    <div class="col-lg-10 col-ml-12">
-        <div class="row">
-            <!-- basic form start -->
-            <div class="col-10 mt-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="header-title">Listado de Usuarios</h4>
-                            <br>
-                        <div class="">
-                            <a class="btn btn-primary pull-right" 
-                            href="{!! route('users.create') !!}"><i class="fa fa-plus">Agregar Usuario</i></a>
-                        </div>
-                        <br> <br>
-                            <div class="c">
-                                <div class="table-responsive">
-                                    <table id="lista_usuarios" class="table table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Nombre</th>
-                                                <th>Email</th>
-                                                <th>Direccion</th>
-                                                <th>Telefono</th>
-                                                <th>Municipio</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div> <!-- row / end -->
+<div class="col-lg-10 mt-9">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Listado de Usuarios</h4>
+                <hr>
+               <p> <a class="btn btn-primary pull-right" 
+                href="{!! route('users.create') !!}"><i class="fa fa-plus">Agregar Usuario</i></a>
+                <p>
+                <br>
+                <hr>
+                <div class="single-table">
+                    <div class="table-responsive">
+                        <table class="table text-center" id="lista_usuarios">
+                            <thead class="text-uppercase bg-dark">
+                                <tr class="text-white">
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Direccion</th>
+                                    <th scope="col">Teléfono</th>
+                                    <th scope="col">Municipio</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
-    
+        </div>
     </div>
-    </div>
+<div class="row">
+   
     </div>
     {{ Html::script('/js/datatables/jquery.dataTables.min.js') }} 
     {{ Html::script('/js/datatables/dataTables.bootstrap.min.js')     }}
@@ -64,9 +59,11 @@
                 },
                 "columns": [
                     { "data": "id" },
+                    { "data": "name" },
+                    { "data": "email" },
+                    { "data": "direccion" },
+                    { "data": "telefono" },
                     { "data": "nombre" },
-                    { "data": "fechaDesde" },
-                    { "data": "fechaHasta" },
                     { "data": "action" },
                     
                 ]
