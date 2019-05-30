@@ -36,7 +36,7 @@ class UserController extends Controller
             2=>'email',
             3=>'direccion',
             4=>'telefono',
-            5=>'municipio',
+            5=>'municipios.nombre',
             6=>'users.id',
         );
         //datos que sirven para aplicar filtros de busqueda en la tablas 
